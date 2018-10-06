@@ -1,0 +1,54 @@
+.camera {
+  max-width: rem(600px);
+  margin: 0 auto;
+  padding: 1rem 0;
+  @include for-phone-only {
+    padding: rem(60px) 1.75rem 1.75rem 1.75rem;
+  }
+}
+.camera__viewer {
+  position: relative;
+}
+.camera__image {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.camera__source {
+  touch-action: none;
+
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: scale(1, 1);
+
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+// .camera__test-1 {
+//   position: absolute;
+//   top: 9rem;
+//   width: 100px;
+//   background-color: greenyellow;
+//   font-size: 20px;
+// }
+// #camera__test-2 {
+//   top: 11rem;
+// }
+// #camera__test-3 {
+//   top: 13rem;
+// }
+// #camera__test-4 {
+//   background-color: mediumturquoise;
+//   top: 15rem;
+// }
+// #camera__test-5 {
+//   top: 17rem;
+// }
