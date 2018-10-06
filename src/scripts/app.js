@@ -7,6 +7,7 @@ document.addEventListener(
     // const //test4 = document.querySelector("#camera__//test-4");
     // const //test5 = document.querySelector("#camera__//test-5");
     const theImage = document.querySelector("#main-image");
+    const theViewer = document.querySelector("#main-viewer");
 
     //igore touch-events upon the element
     window.blockMenuHeaderScroll = false;
@@ -95,8 +96,8 @@ document.addEventListener(
         const { x, y } = event;
         const dx = x - start.x;
         const dy = y - start.y;
-        element.style.left = startPosition.x + dx + "px";
-        element.style.top = startPosition.y + dy + "px";
+        theImage.style.left = startPosition.x + dx + "px";
+        theImage.style.top = startPosition.y + dy + "px";
         currentGesture[event.pointerId].prev = { x: x, y: y };
         nodeState.startPosition = {
           x: startPosition.x + dx,
@@ -138,7 +139,7 @@ document.addEventListener(
         nodeState.prevDist = dist;
         //test3.innerText = nodeState.scale;
 
-        element.style.transform = `scale(${newScale},${newScale})`;
+        theImage.style.transform = `scale(${newScale},${newScale})`;
 
         currentGesture[event.pointerId].prev = { x: x, y: y };
         //test4.innerText = dist;
@@ -213,7 +214,7 @@ document.addEventListener(
       element.addEventListener("pointerup", touchStopHandle);
       element.addEventListener("pointercancel", touchStopHandle);
     };
-    addPointerHandle(theImage);
+    addPointerHandle(theViewer);
   },
   false
 );

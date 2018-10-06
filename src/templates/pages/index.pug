@@ -23,9 +23,9 @@ block content
                                 a(href="#").menu__link Сценарии
 
             section.camera
-                .camera__viewer
+                div(id="main-viewer" class="camera__viewer" touch-action="none")
                     .camera__image
-                        img(id="main-image" class="camera__source" src="./assets/images/image.jpg" touch-action="none")
+                        img(id="main-image" class="camera__source" src="./assets/images/image.jpg")
                 .camera__controls
                     //- div(id="camera__test-1" class="camera__test-1") 0
                     //- div(id="camera__test-2" class="camera__test-1") 0
