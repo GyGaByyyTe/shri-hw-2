@@ -1,7 +1,6 @@
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    const test1 = document.querySelector("#camera__test-1");
     const theZoom = document.querySelector("#camera-zoom");
     const theBrightness = document.querySelector("#camera-brightness");
     const theLocationPointer = document.querySelector("#camera-pointer");
@@ -129,7 +128,6 @@ document.addEventListener(
           nodeState.scale;
         theLocationPointer.style.left = `${50 - dxLocation}%`;
         theLocationPointer.style.top = `${50 - dyLocation}%`;
-        test1.innerText = nodeState.startPosition.x;
       };
 
       const pinchMove = event => {
