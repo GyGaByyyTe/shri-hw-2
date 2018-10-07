@@ -1,11 +1,11 @@
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    // const //test1 = document.querySelector("#camera__//test-1");
-    // const //test2 = document.querySelector("#camera__//test-2");
-    // const //test3 = document.querySelector("#camera__//test-3");
-    // const //test4 = document.querySelector("#camera__//test-4");
-    // const //test5 = document.querySelector("#camera__//test-5");
+    const test1 = document.querySelector("#camera__test-1");
+    const theZoom = document.querySelector("#camera-zoom");
+    const theBrightness = document.querySelector("#camera-brightness");
+    const theLocationPointer = document.querySelector("#camera-pointer");
+
     const theImage = document.querySelector("#main-image");
     const theViewer = document.querySelector("#main-viewer");
 
@@ -35,15 +35,38 @@ document.addEventListener(
         scaling: false,
         rotating: false,
         startPosition: { x: 0, y: 0 },
-        scale: 1,
+        scale: 3,
         brightness: 0.5,
         prevDist: 0,
-        prevRotate: 0
+        prevRotate: 0,
+        imageWidth: theImage.getBoundingClientRect().width,
+        imageHeight: theImage.getBoundingClientRect().height
       };
+      //initial styles for Image
+      theImage.style.transform = `scale(${nodeState.scale},${nodeState.scale})`;
+      theImage.style.filter = `brightness(${nodeState.brightness})`;
+      //initial styles for View Components
+      theLocationPointer.style.transform = `translate(-50%,-50%) scale(${MAX_SCALE /
+        nodeState.scale},${3 / nodeState.scale})`;
+      //смещение по X в %
+      let dxLocation =
+        nodeState.startPosition.x /
+        (nodeState.imageWidth / 100) /
+        nodeState.scale;
+      theLocationPointer.style.left = `${50 - dxLocation}%`;
+      //смещение по Y в %
+      let dyLocation =
+        nodeState.startPosition.y /
+        (nodeState.imageHeight / 100) /
+        nodeState.scale;
+      theLocationPointer.style.top = `${50 - dyLocation}%`;
+
+      theZoom.innerText = nodeState.scale.toFixed(1);
+      theBrightness.innerText = nodeState.brightness.toFixed(2) * 100 + "%";
 
       element.addEventListener("pointerdown", event => {
         // Нужно для десктопа чтобы поймать pointerup вне DOM-ноды
-        element.setPointerCapture(event.pointerId);
+        // element.setPointerCapture(event.pointerId);
 
         currentGesture[event.pointerId] = {
           isPrimary: event.isPrimary,
@@ -55,14 +78,6 @@ document.addEventListener(
             y: nodeState.startPosition.y
           }
         };
-
-        if (event.isPrimary) {
-          //test1.innerText = event.pointerId;
-        } else {
-          //test2.innerText = event.pointerId;
-        }
-
-        // //test3.innerText = Object.keys(currentGesture).length;
 
         if (Object.keys(currentGesture).length === 1) {
           nodeState.moving = true;
@@ -96,6 +111,7 @@ document.addEventListener(
         const { x, y } = event;
         const dx = x - start.x;
         const dy = y - start.y;
+
         theImage.style.left = startPosition.x + dx + "px";
         theImage.style.top = startPosition.y + dy + "px";
         currentGesture[event.pointerId].prev = { x: x, y: y };
@@ -103,6 +119,17 @@ document.addEventListener(
           x: startPosition.x + dx,
           y: startPosition.y + dy
         };
+        let dxLocation =
+          (0 + nodeState.startPosition.x) /
+          (nodeState.imageWidth / 100) /
+          nodeState.scale;
+        let dyLocation =
+          (0 + nodeState.startPosition.y) /
+          (nodeState.imageHeight / 100) /
+          nodeState.scale;
+        theLocationPointer.style.left = `${50 - dxLocation}%`;
+        theLocationPointer.style.top = `${50 - dyLocation}%`;
+        test1.innerText = nodeState.startPosition.x;
       };
 
       const pinchMove = event => {
@@ -137,12 +164,15 @@ document.addEventListener(
 
         nodeState.scale = newScale;
         nodeState.prevDist = dist;
-        //test3.innerText = nodeState.scale;
+        nodeState.imageWidth = theImage.getBoundingClientRect().width;
+        nodeState.imageHeight = theImage.getBoundingClientRect().height;
+        theZoom.innerText = nodeState.scale.toFixed(1);
+        theLocationPointer.style.transform = `translate(-50%,-50%) scale(${MAX_SCALE /
+          nodeState.scale},${3 / nodeState.scale})`;
 
         theImage.style.transform = `scale(${newScale},${newScale})`;
 
         currentGesture[event.pointerId].prev = { x: x, y: y };
-        //test4.innerText = dist;
       };
 
       const rotationMove = event => {
@@ -165,9 +195,9 @@ document.addEventListener(
 
         let k = 1;
         if (rotate > prevRotate) {
-          k = 1.01;
+          k = 1.03;
         } else if (rotate < prevRotate) {
-          k = 0.99;
+          k = 0.97;
         }
         let newBrightness = k * nodeState.brightness;
         if (newBrightness > MAX_BRIGHTNESS) {
@@ -179,7 +209,9 @@ document.addEventListener(
 
         nodeState.brightness = newBrightness;
         nodeState.prevRotate = rotate;
-        // //test5.innerText = nodeState.brightness;
+        theBrightness.innerText = nodeState.brightness.toFixed(2) * 100 + "%";
+
+        theImage.style.filter = `brightness(${nodeState.brightness})`;
 
         currentGesture[event.pointerId].prev = { x: x, y: y };
       };
@@ -187,12 +219,6 @@ document.addEventListener(
       const touchStopHandle = event => {
         if (Object.keys(currentGesture).length < 1) {
           return;
-        }
-
-        if (currentGesture[event.pointerId].isPrimary) {
-          //test1.innerText = 0;
-        } else {
-          //test2.innerText = 0;
         }
 
         if (nodeState.moving) {
@@ -207,9 +233,7 @@ document.addEventListener(
           //   rotationEnd(e);
           nodeState.rotating = false;
         }
-
         delete currentGesture[event.pointerId];
-        // //test3.innerText = Object.keys(currentGesture).length;
       };
       element.addEventListener("pointerup", touchStopHandle);
       element.addEventListener("pointercancel", touchStopHandle);

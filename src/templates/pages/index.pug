@@ -23,11 +23,23 @@ block content
                                 a(href="#").menu__link Сценарии
 
             section.camera
+                .camera__controls
+                    .camera__zoom 
+                        h3.camera__text Zoom: x
+                            span(id="camera-zoom" class="camera__info") 
+                    .camera__brightness
+                        h3.camera__text Brightness:
+                            span(id="camera-brightness" class="camera__info") 
+                    .camera__position
+                        h3.camera__text Location:
+                    .camera__location
+                        div(id="camera-location" class="camera__range")
+                            div(id="camera-pointer" class="camera__range-pointer")
                 div(id="main-viewer" class="camera__viewer" touch-action="none")
                     .camera__image
                         img(id="main-image" class="camera__source" src="./assets/images/image.jpg" ondragstart="return false;")
-                .camera__controls
-                    //- div(id="camera__test-1" class="camera__test-1") 0
+
+                    div(id="camera__test-1" class="camera__test-1") 0
                     //- div(id="camera__test-2" class="camera__test-1") 0
                     //- div(id="camera__test-3" class="camera__test-1") 0
                     //- div(id="camera__test-4" class="camera__test-1") 0
